@@ -18,9 +18,9 @@ int main(int argc, char ** argv)
   else
   {
     int count;
-     while(count = read(fd1,buf, 100 ) !=0)
+     while((count = read(fd1,buf, 100 )) !=0)
      {
-       write(fd2, buf, 100);
+       write(fd2, buf, count);
      }
   }
   close(fd1);
