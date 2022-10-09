@@ -52,7 +52,8 @@ int main()
 	    if (ret_pid == 0) {
 		// child process
 		parse(buff, strings);
-		execvp(strings[0], strings);
+		int ret = execvp(strings[0], strings);
+		printf("%s: not a valid cmd\n", strings[0]);
 	    } else if (ret_pid > 0) {
 		// parent process
 		wait(&status);
