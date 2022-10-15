@@ -61,7 +61,6 @@ int main()
     int ret_pid;
     int status;
     char *strings[10];
-    char *stringsmalloc[10];
     char *name[100];
     char *value[100];
     char *namemalloc[100];
@@ -70,6 +69,7 @@ int main()
     int i = 0;
     int retP;
     int j;
+    int flag = 0;
     while (1) {
 	printf("%s", promMsg);
 	fgets(buff, 100, stdin);
@@ -107,15 +107,21 @@ int main()
 				// child process
 				if(strcmp(strings[0], "export") == 0)
 				{
+					flag = 0;
 					for(j = 0; j < i; j++)
 					{
 						if(strcmp(namemalloc[j], strings[1]) == 0)
 						{
 							setenv(namemalloc[j], valuemalloc[j], 1);
+						        flag = 1;
+							break;
 						}
 					}
-				}
-				else
+					if(!flag)
+					{
+						printf("could not export [%s], var does not exist!\n", strings[1]);
+					}
+				}else
 				{
 				   int ret = execvp(strings[0], strings);
 			 	    printf("%s: not a valid cmd\n", strings[0]);
