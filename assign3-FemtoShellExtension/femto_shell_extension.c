@@ -61,6 +61,7 @@ int main()
     int ret_pid;
     int status;
     char *strings[10];
+    char *stringsmalloc[10];
     char *name[100];
     char *value[100];
     char *namemalloc[100];
@@ -98,13 +99,27 @@ int main()
 		}
 		else
 		{
-	   		 ret_pid = fork();
+	   		int k = parse(buffTemp, strings);
+			ret_pid = fork();
 
+                       
 	   		 if (ret_pid == 0) {
 				// child process
-				parse(buffTemp, strings);
-				int ret = execvp(strings[0], strings);
-				printf("%s: not a valid cmd\n", strings[0]);
+				if(strcmp(strings[0], "export") == 0)
+				{
+					for(j = 0; j < i; j++)
+					{
+						if(strcmp(namemalloc[j], strings[1]) == 0)
+						{
+							setenv(namemalloc[j], valuemalloc[j], 1);
+						}
+					}
+				}
+				else
+				{
+				   int ret = execvp(strings[0], strings);
+			 	    printf("%s: not a valid cmd\n", strings[0]);
+				}
 	    		}
 			 else if (ret_pid > 0) {
 				// parent process
